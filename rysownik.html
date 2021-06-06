@@ -158,6 +158,7 @@ legend_button.place(relx=0.1, rely=0.88, anchor=CENTER)
 
 #konwersja StringVarów na floaty
 def convert(x_from, x_to, y_from, y_to):
+    &#34;&#34;&#34;Przetwarza zakresy osi X i Y podane w typie StringVar, zwracając je w typie float w liście, w kolejności, w jakiej się je podawało jako argumenty&#34;&#34;&#34;
     val_list = [x_from.get(), x_to.get(), y_from.get(), y_to.get()]
     for i in range(len(val_list)):
         val_list[i] = val_list[i].replace(&#34;,&#34;,&#34;.&#34;)
@@ -169,6 +170,7 @@ def convert(x_from, x_to, y_from, y_to):
 
 #przekształcenie wzoru / wzorów
 def nice_formula(function_formula):
+    &#34;&#34;&#34;Przekształca wzór (lub wzory) funkcji podany w polu tekstowym na język zrozumiały dla Pythona&#34;&#34;&#34;
     nice_formula=function_formula.get().replace(&#34;^&#34;,&#34;**&#34;)
     nice_formula=nice_formula.replace(&#34;√&#34;,&#34;sqrt&#34;)
     nice_formula=nice_formula.replace(&#34;,&#34;,&#34;.&#34;)
@@ -176,7 +178,8 @@ def nice_formula(function_formula):
     return nice_formula_list   
 
 #funkcja rysowania wykresu
-def make_plot():
+def make_plot(x_from,x_to,y_from,y_to,function_formula,legend_button_val):
+    &#34;&#34;&#34;Rysuje wykres funkcji, korzystając z danych zwracanych przez funkcje convert() oraz nice_formula(), opcjonalnie dodaje do wykresy legendę&#34;&#34;&#34;
     val_list = convert(x_from, x_to, y_from, y_to)
     for i in val_list:
         if type(i) != float:
@@ -233,12 +236,13 @@ root.mainloop()</code></pre>
 <span>def <span class="ident">convert</span></span>(<span>x_from, x_to, y_from, y_to)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Przetwarza zakresy osi X i Y podane w typie StringVar, zwracając je w typie float w liście, w kolejności, w jakiej się je podawało jako argumenty</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def convert(x_from, x_to, y_from, y_to):
+    &#34;&#34;&#34;Przetwarza zakresy osi X i Y podane w typie StringVar, zwracając je w typie float w liście, w kolejności, w jakiej się je podawało jako argumenty&#34;&#34;&#34;
     val_list = [x_from.get(), x_to.get(), y_from.get(), y_to.get()]
     for i in range(len(val_list)):
         val_list[i] = val_list[i].replace(&#34;,&#34;,&#34;.&#34;)
@@ -250,15 +254,16 @@ root.mainloop()</code></pre>
 </details>
 </dd>
 <dt id="rysownik.make_plot"><code class="name flex">
-<span>def <span class="ident">make_plot</span></span>(<span>)</span>
+<span>def <span class="ident">make_plot</span></span>(<span>x_from, x_to, y_from, y_to, function_formula, legend_button_val)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Rysuje wykres funkcji, korzystając z danych zwracanych przez funkcje convert() oraz nice_formula(), opcjonalnie dodaje do wykresy legendę</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def make_plot():
+<pre><code class="python">def make_plot(x_from,x_to,y_from,y_to,function_formula,legend_button_val):
+    &#34;&#34;&#34;Rysuje wykres funkcji, korzystając z danych zwracanych przez funkcje convert() oraz nice_formula(), opcjonalnie dodaje do wykresy legendę&#34;&#34;&#34;
     val_list = convert(x_from, x_to, y_from, y_to)
     for i in val_list:
         if type(i) != float:
@@ -302,12 +307,13 @@ root.mainloop()</code></pre>
 <span>def <span class="ident">nice_formula</span></span>(<span>function_formula)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Przekształca wzór (lub wzory) funkcji podany w polu tekstowym na język zrozumiały dla Pythona</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def nice_formula(function_formula):
+    &#34;&#34;&#34;Przekształca wzór (lub wzory) funkcji podany w polu tekstowym na język zrozumiały dla Pythona&#34;&#34;&#34;
     nice_formula=function_formula.get().replace(&#34;^&#34;,&#34;**&#34;)
     nice_formula=nice_formula.replace(&#34;√&#34;,&#34;sqrt&#34;)
     nice_formula=nice_formula.replace(&#34;,&#34;,&#34;.&#34;)
