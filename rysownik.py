@@ -130,6 +130,7 @@ legend_button.place(relx=0.1, rely=0.88, anchor=CENTER)
 
 #konwersja StringVarów na floaty
 def convert(x_from, x_to, y_from, y_to):
+    """Przetwarza zakresy osi X i Y podane w typie StringVar, zwracając je w typie float w liście, w kolejności, w jakiej się je podawało jako argumenty"""
     val_list = [x_from.get(), x_to.get(), y_from.get(), y_to.get()]
     for i in range(len(val_list)):
         val_list[i] = val_list[i].replace(",",".")
@@ -141,6 +142,7 @@ def convert(x_from, x_to, y_from, y_to):
 
 #przekształcenie wzoru / wzorów
 def nice_formula(function_formula):
+    """Przekształca wzór (lub wzory) funkcji podany w polu tekstowym na język zrozumiały dla Pythona"""
     nice_formula=function_formula.get().replace("^","**")
     nice_formula=nice_formula.replace("√","sqrt")
     nice_formula=nice_formula.replace(",",".")
@@ -148,7 +150,8 @@ def nice_formula(function_formula):
     return nice_formula_list   
 
 #funkcja rysowania wykresu
-def make_plot():
+def make_plot(x_from,x_to,y_from,y_to,function_formula,legend_button_val):
+    """Rysuje wykres funkcji, korzystając z danych zwracanych przez funkcje convert() oraz nice_formula(), opcjonalnie dodaje do wykresy legendę"""
     val_list = convert(x_from, x_to, y_from, y_to)
     for i in val_list:
         if type(i) != float:
