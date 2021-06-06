@@ -5,6 +5,7 @@ from matplotlib.figure import Figure
 from tkinter import *
 from tkinter import messagebox
 from numpy import sqrt,sin,cos,tan,log,linspace
+from math import ceil
 
 #podstawowe rzeczy związane z inicjacją programu
 root = Tk()
@@ -126,6 +127,7 @@ legend_button.place(relx=0.1, rely=0.9, anchor=CENTER)
 def convert(x_from, x_to, y_from, y_to):
     val_list = [x_from.get(), x_to.get(), y_from.get(), y_to.get()]
     for i in range(len(val_list)):
+        val_list[i] = val_list[i].replace(",",".")
         try:
             val_list[i] = float(val_list[i])
         except:
@@ -142,9 +144,8 @@ def nice_formula(function_formula):
 
 #funkcja rysowania wykresu
 def make_plot():
-
     val_list = convert(x_from, x_to, y_from, y_to)
-    xs = linspace(val_list[0], val_list[1], num=10).tolist()
+    xs = linspace(val_list[0], val_list[1], num=ceil(val_list[1]-val_list[0])*100).tolist()
     formula_list = nice_formula(function_formula)
     ys = [ [] for i in range(len(formula_list)) ]
     for i in range(len(formula_list)):
@@ -153,37 +154,23 @@ def make_plot():
             ys[i].append(eval(formula_list[i]))
    
     figure = Figure(figsize=(5,5), dpi=100)
+    
+    plotter = figure.add_subplot(111)
     for i in range(len(ys)):
-           figure.add_subplot(111).plot(xs,ys[i])
+           plotter.plot(xs, ys[i])
+    figure.legend()
     canvas = FigureCanvasTkAgg(figure, root)
     canvas.draw()
     canvas.get_tk_widget().place(relx=1, rely=1, anchor=SE)
 
-def xddd():
-    val_list=convert(x_from, x_to, y_from, y_to)
-    xs = linspace(val_list[0], val_list[1], num=10).tolist()
-    formula_list=nice_formula(function_formula)
-    ys = [ [] for i in range(len(formula_list)) ]
-    for i in range(len(formula_list)):
-        for j in range(len(xs)):
-            x = xs[j]
-            ys[i].append(eval(formula_list[i]))
-
-    print(formula_list)
-    print(val_list)
-    print(xs)
-    print(ys)
-
-#przycisk do sprawdzania
-xdd = Button(root, text="xd", height=1, width=4, font=("Segoe UI", 20), command = lambda: xddd())
-xdd.place(relx=0.5,rely=0.9,anchor=CENTER)
-        
 #przycisk do rysowania
 
-plot_button = Button(root, text="Rysuj", height=1, width=4, font=("Segoe UI", 20), command = lambda: make_plot())
-plot_button.place(relx=0.1, rely=0.9, anchor=CENTER)
+plot_button = Button(root, text="Rysuj", height=1, width=11, font=("Segoe UI", 20), command = lambda: make_plot())
+plot_button.place(relx=0.29, rely=0.9, anchor=CENTER)
 
 root.mainloop()
+
+
 
 
     
