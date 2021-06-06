@@ -1,6 +1,6 @@
 import matplotlib
 matplotlib.use("TkAgg")
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from matplotlib.figure import Figure
 from tkinter import *
 from tkinter import messagebox
@@ -15,14 +15,14 @@ root.geometry("1000x600+400+250") #do korekty
 
 #przycisk kończący działanie programu
 exit_button = Button(root, text="Wyjdź", command=root.destroy)
-exit_button.place(relx=1, rely=1, anchor=SE)
+exit_button.place(relx=1, rely=0, anchor=NE)
 
 #pole na wzór funkcji
 function_formula=StringVar()
-entry = Entry(root, textvariable=function_formula, width=29, font=("Segoe UI", 20))
-entry.place(relx=0.5, rely=0.1, anchor=CENTER)
+entry = Entry(root, textvariable=function_formula, width=25, font=("Segoe UI", 20))
+entry.place(relx=0.26, rely=0.1, anchor=CENTER)
 entry_label = Label(root, text="f(x)=", font=("Segoe UI", 20))
-entry_label.place(relx = 0.25, rely=0.1, anchor=CENTER)
+entry_label.place(relx = 0.04, rely=0.1, anchor=CENTER)
 
 #przyciski do budowania wzoru funkcji
 open_parenthesis = Button(root, text="(", height=1, width=4, font=("Segoe UI", 12), command = lambda: function_formula.set(function_formula.get() + "("))
@@ -98,30 +98,30 @@ y_to_entry.place(relx=0.25, rely=0.61, anchor=CENTER)
 #określanie tytułu rysunku oraz etykiet osi
 
 plot_title_label = Label(root, text="nazwa rysunku:", font=("Segoe UI", 12))
-plot_title_label.place(relx=0.18, rely=0.7, anchor=E)
+plot_title_label.place(relx=0.18, rely=0.68, anchor=E)
 
 plot_title=StringVar()
 plot_title_entry = Entry(root, textvariable=plot_title, font=("Segoe UI", 12))
-plot_title_entry.place(relx=0.285, rely=0.7, anchor=CENTER)
+plot_title_entry.place(relx=0.285, rely=0.68, anchor=CENTER)
 
 plot_xlabel_label = Label(root, text="nazwa etykiety osi X:", font=("Segoe UI", 12))
-plot_xlabel_label.place(relx=0.18, rely=0.75, anchor=E)
+plot_xlabel_label.place(relx=0.18, rely=0.73, anchor=E)
 
 plot_xlabel = StringVar()
 plot_xlabel_entry = Entry(root, textvariable=plot_xlabel, font=("Segoe UI", 12))
-plot_xlabel_entry.place(relx=0.285, rely=0.75, anchor=CENTER)
+plot_xlabel_entry.place(relx=0.285, rely=0.73, anchor=CENTER)
 
 plot_ylabel_label = Label(root, text="nazwa etykiety osi Y:", font=("Segoe UI", 12))
-plot_ylabel_label.place(relx=0.18, rely=0.8, anchor=E)
+plot_ylabel_label.place(relx=0.18, rely=0.78, anchor=E)
 
 plot_ylabel = StringVar()
 plot_ylabel_entry = Entry(root, textvariable=plot_ylabel, font=("Segoe UI", 12))
-plot_ylabel_entry.place(relx=0.285, rely=0.8, anchor=CENTER)
+plot_ylabel_entry.place(relx=0.285, rely=0.78, anchor=CENTER)
 
 #przycisk legendy
 legend_button_val = IntVar()
 legend_button = Checkbutton(root, text="legenda", variable=legend_button_val, onvalue=1, offvalue=0, font=("Segoe UI", 12))
-legend_button.place(relx=0.1, rely=0.9, anchor=CENTER)
+legend_button.place(relx=0.1, rely=0.88, anchor=CENTER)
 
 #konwersja StringVarów na floaty
 def convert(x_from, x_to, y_from, y_to):
@@ -137,36 +137,50 @@ def convert(x_from, x_to, y_from, y_to):
 
 #przekształcenie wzoru / wzorów
 def nice_formula(function_formula):
-    formula=function_formula.get().replace("^","**")
-    formula=formula.replace("√","sqrt")
-    formula_list=formula.split("; ")
-    return formula_list   
+    nice_formula=function_formula.get().replace("^","**")
+    nice_formula=nice_formula.replace("√","sqrt")
+    nice_formula=nice_formula.replace(",",".")
+    nice_formula_list=nice_formula.split("; ")
+    return nice_formula_list   
 
 #funkcja rysowania wykresu
 def make_plot():
     val_list = convert(x_from, x_to, y_from, y_to)
+    for i in val_list:
+        if type(i) != float:
+            messagebox.showerror("Błąd","Proszę podać poprawne zakresy osi.")
+            return
     xs = linspace(val_list[0], val_list[1], num=ceil(val_list[1]-val_list[0])*100).tolist()
-    formula_list = nice_formula(function_formula)
-    ys = [ [] for i in range(len(formula_list)) ]
-    for i in range(len(formula_list)):
+    formula=function_formula.get()
+    formula_list = formula.split("; ")
+    nice_formula_list = nice_formula(function_formula)
+    ys = [ [] for i in range(len(nice_formula_list)) ]
+    for i in range(len(nice_formula_list)):
         for j in range(len(xs)):
             x = xs[j]
-            ys[i].append(eval(formula_list[i]))
+            ys[i].append(eval(nice_formula_list[i]))
    
     figure = Figure(figsize=(5,5), dpi=100)
-    
     plotter = figure.add_subplot(111)
     for i in range(len(ys)):
-           plotter.plot(xs, ys[i])
-    figure.legend()
+           plotter.plot(xs, ys[i], label = formula_list[i])
+    plotter.set_title(plot_title.get())
+    plotter.set_xlabel(plot_xlabel.get())
+    plotter.set_ylabel(plot_ylabel.get())
+    plotter.set_ylim(val_list[2], val_list[3])
+    plotter.set_xlim(val_list[0], val_list[1])
+    if legend_button_val.get() == 1:
+        plotter.legend()
     canvas = FigureCanvasTkAgg(figure, root)
     canvas.draw()
     canvas.get_tk_widget().place(relx=1, rely=1, anchor=SE)
 
+
+
 #przycisk do rysowania
 
 plot_button = Button(root, text="Rysuj", height=1, width=11, font=("Segoe UI", 20), command = lambda: make_plot())
-plot_button.place(relx=0.29, rely=0.9, anchor=CENTER)
+plot_button.place(relx=0.29, rely=0.88, anchor=CENTER)
 
 root.mainloop()
 
