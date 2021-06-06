@@ -1,6 +1,10 @@
-import matplotlib as plt
+import matplotlib
+matplotlib.use("TkAgg")
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.figure import Figure
 from tkinter import *
-import numpy as np
+from tkinter import messagebox
+from numpy import sqrt,sin,cos,tan,linspace
 
 #podstawowe rzeczy związane z inicjacją programu
 root = Tk()
@@ -117,6 +121,69 @@ plot_ylabel_entry.place(relx=0.285, rely=0.8, anchor=CENTER)
 legend_button_val = IntVar()
 legend_button = Checkbutton(root, text="legenda", variable=legend_button_val, onvalue=1, offvalue=0, font=("Segoe UI", 12))
 legend_button.place(relx=0.1, rely=0.9, anchor=CENTER)
+
+#konwersja StringVarów na floaty
+def convert(x_from, x_to, y_from, y_to):
+    val_list = [x_from.get(), x_to.get(), y_from.get(), y_to.get()]
+    for i in range(len(val_list)):
+        try:
+            val_list[i] = float(val_list[i])
+        except:
+            pass
+    return val_list
+
+
+#przekształcenie wzoru / wzorów
+def nice_formula(function_formula):
+    formula=function_formula.get().replace("^","**")
+    formula=formula.replace("√","sqrt")
+    formula_list=formula.split("; ")
+    for i in range(len(formula_list)):
+        try:
+            formula_list[i] = float(formula[i])
+        except:
+            pass
+    return formula_list   
+
+#funkcja rysowania wykresu
+def make_plot():
+
+    val_list = convert(x_from, x_to, y_from, y_to)
+    x = linspace(val_list[0], val_list[1], num=200)
+    formula_list = nice_formula(function_formula)
+    for i in range(len(val_list)):
+        if type(val_list) != float:
+            messagebox.showerror("Błąd","Proszę podać poprawne zakresy osi")
+            return
+    for i in range(len(formula_list)):
+        if type(formula_list) != float:
+            if len(formula_list) <= 1:
+                messagebox.showerror("Błąd","Proszę podać poprawny wzór funkcji")
+                return
+            else:
+                messagebox.showerror("Błąd","Proszę podać poprawne wzory funkcji")
+                return
+    y = formula_list
+   
+    figure = Figure(figsize=(5,5), dpi=100)
+    function_plot = f.add_subplot(111)
+    for i in range(len(y)):
+        function_plot.plot(x,y[i])
+    canvas = FigureCanvasTkAgg(function_plot, self)
+    canvas.show()
+    canvas.get_tk_widget().place(relx=1, relxy=1, anchor=SE)
+        
+#przycisk do rysowania
+
+plot_button = Button(root, text="Rysuj", height=1, width=4, font=("Segoe UI", 20), command = lambda: make_plot())
+plot_button.place(relx=0.1, rely=0.9, anchor=CENTER)
+
+root.mainloop()
+    
+    
+    
+    
+
 
 
 
