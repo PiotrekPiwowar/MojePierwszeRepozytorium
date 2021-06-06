@@ -4,7 +4,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 from tkinter import *
 from tkinter import messagebox
-from numpy import sqrt,sin,cos,tan,linspace
+from numpy import sqrt,sin,cos,tan,log,linspace
 
 #podstawowe rzeczy związane z inicjacją programu
 root = Tk()
@@ -138,40 +138,45 @@ def nice_formula(function_formula):
     formula=function_formula.get().replace("^","**")
     formula=formula.replace("√","sqrt")
     formula_list=formula.split("; ")
-    for i in range(len(formula_list)):
-        try:
-            formula_list[i] = float(formula[i])
-        except:
-            pass
     return formula_list   
 
 #funkcja rysowania wykresu
 def make_plot():
 
     val_list = convert(x_from, x_to, y_from, y_to)
-    x = linspace(val_list[0], val_list[1], num=200)
+    xs = linspace(val_list[0], val_list[1], num=10).tolist()
     formula_list = nice_formula(function_formula)
-    for i in range(len(val_list)):
-        if type(val_list) != float:
-            messagebox.showerror("Błąd","Proszę podać poprawne zakresy osi")
-            return
+    ys = [ [] for i in range(len(formula_list)) ]
     for i in range(len(formula_list)):
-        if type(formula_list) != float:
-            if len(formula_list) <= 1:
-                messagebox.showerror("Błąd","Proszę podać poprawny wzór funkcji")
-                return
-            else:
-                messagebox.showerror("Błąd","Proszę podać poprawne wzory funkcji")
-                return
-    y = formula_list
+        for j in range(len(xs)):
+            x = xs[j]
+            ys[i].append(eval(formula_list[i]))
    
     figure = Figure(figsize=(5,5), dpi=100)
-    function_plot = f.add_subplot(111)
-    for i in range(len(y)):
-        function_plot.plot(x,y[i])
-    canvas = FigureCanvasTkAgg(function_plot, self)
-    canvas.show()
-    canvas.get_tk_widget().place(relx=1, relxy=1, anchor=SE)
+    for i in range(len(ys)):
+           figure.add_subplot(111).plot(xs,ys[i])
+    canvas = FigureCanvasTkAgg(figure, root)
+    canvas.draw()
+    canvas.get_tk_widget().place(relx=1, rely=1, anchor=SE)
+
+def xddd():
+    val_list=convert(x_from, x_to, y_from, y_to)
+    xs = linspace(val_list[0], val_list[1], num=10).tolist()
+    formula_list=nice_formula(function_formula)
+    ys = [ [] for i in range(len(formula_list)) ]
+    for i in range(len(formula_list)):
+        for j in range(len(xs)):
+            x = xs[j]
+            ys[i].append(eval(formula_list[i]))
+
+    print(formula_list)
+    print(val_list)
+    print(xs)
+    print(ys)
+
+#przycisk do sprawdzania
+xdd = Button(root, text="xd", height=1, width=4, font=("Segoe UI", 20), command = lambda: xddd())
+xdd.place(relx=0.5,rely=0.9,anchor=CENTER)
         
 #przycisk do rysowania
 
@@ -179,9 +184,11 @@ plot_button = Button(root, text="Rysuj", height=1, width=4, font=("Segoe UI", 20
 plot_button.place(relx=0.1, rely=0.9, anchor=CENTER)
 
 root.mainloop()
+
+
     
     
-    
+
     
 
 
