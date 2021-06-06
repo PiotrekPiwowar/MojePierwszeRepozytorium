@@ -11,7 +11,7 @@ from math import ceil
 root = Tk()
 title = "Rysowanie funkcji"
 root.title(title)
-root.geometry("1000x600+400+250") #do korekty
+root.geometry("1000x600+460+220")
 
 #przycisk kończący działanie programu
 exit_button = Button(root, text="Wyjdź", command=root.destroy)
@@ -134,7 +134,6 @@ def convert(x_from, x_to, y_from, y_to):
             pass
     return val_list
 
-
 #przekształcenie wzoru / wzorów
 def nice_formula(function_formula):
     nice_formula=function_formula.get().replace("^","**")
@@ -157,9 +156,16 @@ def make_plot():
     ys = [ [] for i in range(len(nice_formula_list)) ]
     for i in range(len(nice_formula_list)):
         for j in range(len(xs)):
-            x = xs[j]
-            ys[i].append(eval(nice_formula_list[i]))
-   
+            try:
+                x = xs[j]
+                ys[i].append(eval(nice_formula_list[i]))
+            except:
+                if len(formula_list) <= 1:
+                    messagebox.showerror("Błąd","Proszę podać poprawny wzór funkcji.")
+                    return
+                else:
+                    messagebox.showerror("Błąd","Proszę podać poprawne zwory funkcji.")
+                    return
     figure = Figure(figsize=(5,5), dpi=100)
     plotter = figure.add_subplot(111)
     for i in range(len(ys)):
@@ -173,12 +179,9 @@ def make_plot():
         plotter.legend()
     canvas = FigureCanvasTkAgg(figure, root)
     canvas.draw()
-    canvas.get_tk_widget().place(relx=1, rely=1, anchor=SE)
-
-
+    canvas.get_tk_widget().place(relx=0.97, rely=0.95, anchor=SE)
 
 #przycisk do rysowania
-
 plot_button = Button(root, text="Rysuj", height=1, width=11, font=("Segoe UI", 20), command = lambda: make_plot())
 plot_button.place(relx=0.29, rely=0.88, anchor=CENTER)
 
