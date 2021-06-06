@@ -25,19 +25,9 @@ entry_label = Label(root, text="f(x)=", font=("Segoe UI", 20))
 entry_label.place(relx = 0.04, rely=0.1, anchor=CENTER)
 
 #przyciski do budowania wzoru funkcji
-open_parenthesis = Button(root, text="(", height=1, width=4, font=("Segoe UI", 12), command = lambda: function_formula.set(function_formula.get() + "("))
-open_parenthesis.place(relx=0.2, rely=0.28, anchor = CENTER)
 
-close_parenthesis = Button(root, text=")", height=1, width=4, font=("Segoe UI", 12), command = lambda: function_formula.set(function_formula.get() + ")"))
-close_parenthesis.place(relx=0.25, rely=0.28, anchor=CENTER)
 
-exp = Button(root, text="^", height=1, width=4, font=("Segoe UI", 12), command = lambda: function_formula.set(function_formula.get() + "^"))
-exp.place(relx=0.1, rely=0.28, anchor=CENTER)
 
-sq_root = Button(root, text="√", height=1, width=4, font=("Segoe UI", 12), command = lambda: function_formula.set(function_formula.get() + "√()"))
-sq_root.place(relx=0.15, rely=0.28, anchor=CENTER)
-mult = Button(root, text="*", height=1, width=4, font=("Segoe UI", 12), command = lambda: function_formula.set(function_formula.get() + "*"))
-mult.place(relx=0.2, rely=0.2, anchor=CENTER)
 
 div = Button(root, text="/", height=1, width=4, font=("Segoe UI", 12), command = lambda: function_formula.set(function_formula.get() + "/"))
 div.place(relx=0.25, rely=0.2, anchor=CENTER)
@@ -47,6 +37,21 @@ add.place(relx=0.1, rely=0.2, anchor=CENTER)
 
 sub = Button(root, text="-", height=1, width=4, font=("Segoe UI", 12), command = lambda: function_formula.set(function_formula.get() + "-"))
 sub.place(relx=0.15, rely=0.2, anchor=CENTER)
+
+exp = Button(root, text="^", height=1, width=4, font=("Segoe UI", 12), command = lambda: function_formula.set(function_formula.get() + "^"))
+exp.place(relx=0.1, rely=0.28, anchor=CENTER)
+
+sq_root = Button(root, text="√", height=1, width=4, font=("Segoe UI", 12), command = lambda: function_formula.set(function_formula.get() + "√()"))
+sq_root.place(relx=0.15, rely=0.28, anchor=CENTER)
+
+mult = Button(root, text="*", height=1, width=4, font=("Segoe UI", 12), command = lambda: function_formula.set(function_formula.get() + "*"))
+mult.place(relx=0.2, rely=0.2, anchor=CENTER)
+
+open_parenthesis = Button(root, text="(", height=1, width=4, font=("Segoe UI", 12), command = lambda: function_formula.set(function_formula.get() + "("))
+open_parenthesis.place(relx=0.2, rely=0.28, anchor = CENTER)
+
+close_parenthesis = Button(root, text=")", height=1, width=4, font=("Segoe UI", 12), command = lambda: function_formula.set(function_formula.get() + ")"))
+close_parenthesis.place(relx=0.25, rely=0.28, anchor=CENTER)
 
 sine = Button(root, text="sin", height=1, width=4, font=("Segoe UI", 12), command = lambda: function_formula.set(function_formula.get() + "sin()"))
 sine.place(relx=0.1, rely=0.36, anchor=CENTER)
@@ -175,6 +180,7 @@ def make_plot():
     plotter.set_ylabel(plot_ylabel.get())
     plotter.set_ylim(val_list[2], val_list[3])
     plotter.set_xlim(val_list[0], val_list[1])
+    figure.tight_layout()
     if legend_button_val.get() == 1:
         plotter.legend()
     canvas = FigureCanvasTkAgg(figure, root)
