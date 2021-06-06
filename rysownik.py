@@ -186,15 +186,3 @@ plot_button = Button(root, text="Rysuj", height=1, width=11, font=("Segoe UI", 2
 plot_button.place(relx=0.29, rely=0.88, anchor=CENTER)
 
 root.mainloop()
-
-
-
-
-    
-    
-
-    
-
-
-
-
