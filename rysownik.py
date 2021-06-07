@@ -7,6 +7,8 @@ from tkinter import messagebox
 from numpy import sqrt,sin,cos,tan,log,linspace
 from math import ceil
 
+"""Program do tworzenia wykresu jednej lub więcej funkcji. W przypadku podania więcej niż jednego wzoru funkcji, należy oddzielić je średnikiem i spacją"""
+
 #podstawowe rzeczy związane z inicjacją programu
 root = Tk()
 title = "Rysowanie funkcji"
