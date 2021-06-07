@@ -191,7 +191,7 @@ def make_plot(x_from,x_to,y_from,y_to,function_formula,legend_button_val):
     canvas.get_tk_widget().place(relx=0.97, rely=0.95, anchor=SE)
 
 #przycisk do rysowania
-plot_button = Button(root, text="Rysuj", height=1, width=11, font=("Segoe UI", 20), command = lambda: make_plot())
+plot_button = Button(root, text="Rysuj", height=1, width=11, font=("Segoe UI", 20), command = lambda: make_plot(x_from,x_to,y_from,y_to,function_formula,legend_button_val))
 plot_button.place(relx=0.29, rely=0.88, anchor=CENTER)
 
 root.mainloop()
